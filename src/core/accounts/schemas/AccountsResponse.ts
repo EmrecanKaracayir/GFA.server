@@ -10,10 +10,17 @@ export class AccountsResponse implements IResponse {
   ) {}
 
   public static fromModel(model: AccountModel): AccountsResponse {
-    return new AccountsResponse(model.accountId, model.username, model.membership);
+    return new AccountsResponse(
+      model.accountId,
+      model.username,
+      model.membership,
+    );
   }
 
   public static fromModels(models: AccountModel[]): AccountsResponse[] {
-    return models.map((model: AccountModel): AccountsResponse => AccountsResponse.fromModel(model));
+    return models.map(
+      (model: AccountModel): AccountsResponse =>
+        AccountsResponse.fromModel(model),
+    );
   }
 }

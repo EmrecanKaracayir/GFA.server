@@ -78,7 +78,8 @@ const clientErrorMessages: ClientErrorCodeMap<string> = {
   [ClientErrorCode.EXPIRED_TOKEN]: "Provided token has expired.",
   //  *  4XXXX: Session errors
   [ClientErrorCode.INVALID_SESSION_KEY_LENGTH]: `Provided session key wasn't in the length range of ${SessionRules.SESSION_KEY_MIN_LENGTH} to ${SessionRules.SESSION_KEY_MAX_LENGTH}.`,
-  [ClientErrorCode.INVALID_SESSION_KEY_CONTENT]: "Provided session key was invalid.",
+  [ClientErrorCode.INVALID_SESSION_KEY_CONTENT]:
+    "Provided session key was invalid.",
   //  *  5XXXX: Permission errors
   [ClientErrorCode.FORBIDDEN_ACCESS]:
     "Provided membership doesn't have the necessary permissions to access this resource.",
@@ -88,17 +89,21 @@ const clientErrorMessages: ClientErrorCodeMap<string> = {
   [ClientErrorCode.INVALID_USERNAME_LENGTH]: `Provided username wasn't in the length range of ${AccountRules.USERNAME_MIN_LENGTH} to ${AccountRules.USERNAME_MAX_LENGTH}.`,
   [ClientErrorCode.INVALID_PASSWORD_LENGTH]: `Provided password wasn't in the length range of ${AccountRules.PASSWORD_MIN_LENGTH} to ${AccountRules.PASSWORD_MAX_LENGTH}.`,
   //  *  7XXXX: Content errors
-  [ClientErrorCode.INVALID_USERNAME_CONTENT]: "Provided username contained invalid characters.",
+  [ClientErrorCode.INVALID_USERNAME_CONTENT]:
+    "Provided username contained invalid characters.",
   [ClientErrorCode.INVALID_PASSWORD_CONTENT]:
     "Provided password didn't satisfy the requirements. A password must contain at least one lowercase letter, one uppercase letter, one digit and one special character.",
 
   // REQUEST ERRORS (8XXXX - 9XXXX)
   //  *  8XXXX: Route errors
   //  *  *  800XX: /login errors
-  [ClientErrorCode.NO_ACCOUNT_FOUND]: "No account was found with the provided username.",
+  [ClientErrorCode.NO_ACCOUNT_FOUND]:
+    "No account was found with the provided username.",
   [ClientErrorCode.INCORRECT_PASSWORD]: "Provided password was incorrect.",
   //  *  *  801XX: /signup errors
-  [ClientErrorCode.ACCOUNT_ALREADY_EXISTS]: "An account already exists with the provided username.",
+  [ClientErrorCode.ACCOUNT_ALREADY_EXISTS]:
+    "An account already exists with the provided username.",
   //  *  9XXXX: Catch-all errors
-  [ClientErrorCode.RESOURCE_NOT_FOUND]: "The requested resource couldn't be found.",
+  [ClientErrorCode.RESOURCE_NOT_FOUND]:
+    "The requested resource couldn't be found.",
 };

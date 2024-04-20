@@ -24,8 +24,14 @@ app.use(
   `${ConfigConstants.API_PREFIX}/${AccountsBuilder.BASE_ROUTE}`,
   new AccountsBuilder().router,
 );
-app.use(`${ConfigConstants.API_PREFIX}/${LoginBuilder.BASE_ROUTE}`, new LoginBuilder().router);
-app.use(`${ConfigConstants.API_PREFIX}/${SignupBuilder.BASE_ROUTE}`, new SignupBuilder().router);
+app.use(
+  `${ConfigConstants.API_PREFIX}/${LoginBuilder.BASE_ROUTE}`,
+  new LoginBuilder().router,
+);
+app.use(
+  `${ConfigConstants.API_PREFIX}/${SignupBuilder.BASE_ROUTE}`,
+  new SignupBuilder().router,
+);
 
 // Post-Middlewares
 app.use("*", MethodMiddleware.methodNotAllowed);

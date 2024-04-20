@@ -1,7 +1,11 @@
 import { IUtil } from "../interfaces/IUtil";
 
 export class StringUtil implements IUtil {
-  public static isInLengthRange(str: string, minLength: number, maxLength: number): boolean {
+  public static isInLengthRange(
+    str: string,
+    minLength: number,
+    maxLength: number,
+  ): boolean {
     return str.length >= minLength && str.length <= maxLength;
   }
 

@@ -48,7 +48,8 @@ export class AccountsController implements IController {
       }
       const blueprintData: AccountsRequest = protovalidData;
       // V3: Physical validation
-      const validationErrors: ClientError[] = AccountsRequest.getValidationErrors(blueprintData);
+      const validationErrors: ClientError[] =
+        AccountsRequest.getValidationErrors(blueprintData);
       if (validationErrors.length > 0) {
         return ResponseUtil.controllerResponse(
           res,

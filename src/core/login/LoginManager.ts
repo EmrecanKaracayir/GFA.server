@@ -20,9 +20,8 @@ export class LoginManager implements IManager {
     validatedData: LoginRequest,
   ): Promise<ManagerResponse<LoginResponse | null>> {
     // Try to get account
-    const providerResponse: ProviderResponse<AccountModel | null> = await this.mProvider.getAccount(
-      validatedData.username,
-    );
+    const providerResponse: ProviderResponse<AccountModel | null> =
+      await this.mProvider.getAccount(validatedData.username);
     // Check response
     if (!providerResponse.data) {
       // No account found
@@ -34,7 +33,12 @@ export class LoginManager implements IManager {
       );
     }
     // Account found, check password
-    if (!(await EncryptionHelper.compare(validatedData.password, providerResponse.data.password))) {
+    if (
+      !(await EncryptionHelper.compare(
+        validatedData.password,
+        providerResponse.data.password,
+      ))
+    ) {
       // Passwords don't match
       return ResponseUtil.managerResponse(
         new HttpStatus(HttpStatusCode.UNAUTHORIZED),

@@ -8,7 +8,9 @@ export class LoggerMiddleware implements IMiddleware {
     _res: MiddlewareResponse,
     next: ExpressNextFunction,
   ): void {
-    console.log(`Received a ${req.method} request on ${req.url} at ${new Date().toISOString()}`);
+    console.log(
+      `Received a ${req.method} request on ${req.url} at ${new Date().toISOString()}`,
+    );
     return next();
   }
 }

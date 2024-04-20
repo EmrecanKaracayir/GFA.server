@@ -12,10 +12,14 @@ export class SessionKeyValidator implements IValidator {
         SessionRules.SESSION_KEY_MAX_LENGTH,
       )
     ) {
-      validationErrors.push(new ClientError(ClientErrorCode.INVALID_SESSION_KEY_LENGTH));
+      validationErrors.push(
+        new ClientError(ClientErrorCode.INVALID_SESSION_KEY_LENGTH),
+      );
     }
     if (!StringUtil.matchesRegex(data, SessionRules.SESSION_KEY_REGEX)) {
-      validationErrors.push(new ClientError(ClientErrorCode.INVALID_SESSION_KEY_CONTENT));
+      validationErrors.push(
+        new ClientError(ClientErrorCode.INVALID_SESSION_KEY_CONTENT),
+      );
     }
   }
 }

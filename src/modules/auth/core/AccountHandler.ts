@@ -7,12 +7,15 @@ import type { IHandler } from "../app/interfaces/IHandler";
 import { AuthResponseUtil } from "../app/utils/AuthResponseUtil";
 
 export class AccountHandler implements IHandler {
-  public static async verifyAccount(tokenPayload: TokenPayload): Promise<HandlerResponse<boolean>> {
+  public static async verifyAccount(
+    tokenPayload: TokenPayload,
+  ): Promise<HandlerResponse<boolean>> {
     await DbConstants.POOL.query(DbConstants.BEGIN);
     try {
-      const results: QueryResult = await DbConstants.POOL.query(Queries.GET_ACCOUNT$ACID, [
-        tokenPayload.accountId,
-      ]);
+      const results: QueryResult = await DbConstants.POOL.query(
+        Queries.GET_ACCOUNT$ACID,
+        [tokenPayload.accountId],
+      );
       const record: unknown = results.rows[0];
       if (!record) {
         return await AuthResponseUtil.handlerResponse(false);

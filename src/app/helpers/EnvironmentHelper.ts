@@ -65,25 +65,34 @@ export class EnvironmentHelper implements IHelper {
   }
 
   private loadJwtSecret(): Secret {
-    const encodedJwtSecret: Secret | undefined = process.env[EnvironmentHelper.JWT_SECRET_KEY];
+    const encodedJwtSecret: Secret | undefined =
+      process.env[EnvironmentHelper.JWT_SECRET_KEY];
     if (!encodedJwtSecret) {
-      throw new Error(`Environment variable "${EnvironmentHelper.JWT_SECRET_KEY}" is not defined!`);
+      throw new Error(
+        `Environment variable "${EnvironmentHelper.JWT_SECRET_KEY}" is not defined!`,
+      );
     }
     return Buffer.from(encodedJwtSecret, "base64url").toString("utf8");
   }
 
   private loadPoolUser(): string {
-    const encodedPoolUser: string | undefined = process.env[EnvironmentHelper.POOL_USER_KEY];
+    const encodedPoolUser: string | undefined =
+      process.env[EnvironmentHelper.POOL_USER_KEY];
     if (!encodedPoolUser) {
-      throw new Error(`Environment variable "${EnvironmentHelper.POOL_USER_KEY}" is not defined!`);
+      throw new Error(
+        `Environment variable "${EnvironmentHelper.POOL_USER_KEY}" is not defined!`,
+      );
     }
     return Buffer.from(encodedPoolUser, "base64url").toString("utf8");
   }
 
   private loadPoolHost(): string {
-    const encodedPoolHost: string | undefined = process.env[EnvironmentHelper.POOL_HOST_KEY];
+    const encodedPoolHost: string | undefined =
+      process.env[EnvironmentHelper.POOL_HOST_KEY];
     if (!encodedPoolHost) {
-      throw new Error(`Environment variable "${EnvironmentHelper.POOL_HOST_KEY}" is not defined!`);
+      throw new Error(
+        `Environment variable "${EnvironmentHelper.POOL_HOST_KEY}" is not defined!`,
+      );
     }
     return Buffer.from(encodedPoolHost, "base64url").toString("utf8");
   }
@@ -111,9 +120,12 @@ export class EnvironmentHelper implements IHelper {
   }
 
   private loadPoolPort(): number {
-    const encodedPoolPort: string | undefined = process.env[EnvironmentHelper.POOL_PORT_KEY];
+    const encodedPoolPort: string | undefined =
+      process.env[EnvironmentHelper.POOL_PORT_KEY];
     if (!encodedPoolPort) {
-      throw new Error(`Environment variable "${EnvironmentHelper.POOL_PORT_KEY}" is not defined!`);
+      throw new Error(
+        `Environment variable "${EnvironmentHelper.POOL_PORT_KEY}" is not defined!`,
+      );
     }
     return parseInt(Buffer.from(encodedPoolPort, "base64url").toString("utf8"));
   }

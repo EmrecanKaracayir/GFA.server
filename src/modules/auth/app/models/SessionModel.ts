@@ -27,7 +27,9 @@ export class SessionModel implements IModel {
     if (!this.areValidModels(records)) {
       throw new ModelMismatchError(records);
     }
-    return records.map((record: unknown): SessionModel => this.fromRecord(record));
+    return records.map(
+      (record: unknown): SessionModel => this.fromRecord(record),
+    );
   }
 
   private static isValidModel(obj: unknown): obj is SessionModel {
@@ -48,6 +50,8 @@ export class SessionModel implements IModel {
     if (!Array.isArray(objs)) {
       return false;
     }
-    return objs.every((obj: unknown): boolean => SessionModel.isValidModel(obj));
+    return objs.every((obj: unknown): boolean =>
+      SessionModel.isValidModel(obj),
+    );
   }
 }

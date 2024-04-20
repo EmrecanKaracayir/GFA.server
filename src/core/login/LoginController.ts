@@ -50,7 +50,8 @@ export class LoginController implements IController {
       }
       const blueprintData: LoginRequest = protovalidData;
       // V3: Physical validation
-      const validationErrors: ClientError[] = LoginRequest.getValidationErrors(blueprintData);
+      const validationErrors: ClientError[] =
+        LoginRequest.getValidationErrors(blueprintData);
       if (validationErrors.length > 0) {
         return ResponseUtil.controllerResponse(
           res,

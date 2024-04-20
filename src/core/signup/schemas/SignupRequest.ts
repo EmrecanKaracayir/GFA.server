@@ -23,7 +23,9 @@ export class SignupRequest implements IRequest {
     );
   }
 
-  public static getValidationErrors(blueprintData: SignupRequest): ClientError[] {
+  public static getValidationErrors(
+    blueprintData: SignupRequest,
+  ): ClientError[] {
     const validationErrors: ClientError[] = new Array<ClientError>();
     SessionKeyValidator.validate(blueprintData.sessionKey, validationErrors);
     UsernameValidator.validate(blueprintData.username, validationErrors);

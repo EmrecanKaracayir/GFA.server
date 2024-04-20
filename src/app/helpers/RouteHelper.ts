@@ -1,13 +1,20 @@
 import type { ControllerResponse } from "../../@types/responses";
 import type { Tokens } from "../../@types/tokens";
 import type { FullRoute } from "../../@types/utils";
-import type { ExpressNextFunction, ExpressRequest, ExpressRouter } from "../../@types/wrappers";
+import type {
+  ExpressNextFunction,
+  ExpressRequest,
+  ExpressRouter,
+} from "../../@types/wrappers";
 import { Method } from "../enums/Method";
 import type { IHelper } from "../interfaces/IHelper";
 import type { IResponse } from "../interfaces/IResponse";
 
 export class RouteHelper implements IHelper {
-  private static routeMethodMap: Map<string, Method[]> = new Map<string, Method[]>();
+  private static routeMethodMap: Map<string, Method[]> = new Map<
+    string,
+    Method[]
+  >();
 
   public static buildRoute<D extends IResponse | null, T extends Tokens | null>(
     router: ExpressRouter,
@@ -45,7 +52,8 @@ export class RouteHelper implements IHelper {
   }
 
   public static addMethod(route: string, method: Method): void {
-    const routeMethods: Method[] | undefined = RouteHelper.routeMethodMap.get(route);
+    const routeMethods: Method[] | undefined =
+      RouteHelper.routeMethodMap.get(route);
     if (!routeMethods) {
       RouteHelper.routeMethodMap.set(route, []).get(route)!.push(method);
     } else {
@@ -54,7 +62,8 @@ export class RouteHelper implements IHelper {
   }
 
   public static getMethods(route: string): Method[] | null {
-    const routeMethods: Method[] | undefined = RouteHelper.routeMethodMap.get(route);
+    const routeMethods: Method[] | undefined =
+      RouteHelper.routeMethodMap.get(route);
     return routeMethods ? routeMethods : null;
   }
 

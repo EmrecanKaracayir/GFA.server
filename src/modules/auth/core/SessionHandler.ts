@@ -1,5 +1,10 @@
 import { QueryResult } from "pg";
-import { RawTokenData, Token, TokenPayload, Tokens } from "../../../@types/tokens";
+import {
+  RawTokenData,
+  Token,
+  TokenPayload,
+  Tokens,
+} from "../../../@types/tokens";
 import { DbConstants } from "../../../app/constants/DbConstants";
 import { UnexpectedQueryResultError } from "../../../app/schemas/ServerError";
 import type { HandlerResponse } from "../@types/responses";
@@ -16,16 +21,18 @@ export class SessionHandler implements IHandler {
   ): Promise<HandlerResponse<boolean>> {
     await DbConstants.POOL.query(DbConstants.BEGIN);
     try {
-      const sessionResults: QueryResult = await DbConstants.POOL.query(Queries.GET_SESSION$SSID, [
-        tokenPayload.sessionId,
-      ]);
+      const sessionResults: QueryResult = await DbConstants.POOL.query(
+        Queries.GET_SESSION$SSID,
+        [tokenPayload.sessionId],
+      );
       const sessionRecord: unknown = sessionResults.rows[0];
       if (!sessionRecord) {
         return await AuthResponseUtil.handlerResponse(false);
       }
       const session: SessionModel = SessionModel.fromRecord(sessionRecord);
       return await AuthResponseUtil.handlerResponse(
-        tokenPayload.accountId === session.accountId && refreshToken === session.refreshToken,
+        tokenPayload.accountId === session.accountId &&
+          refreshToken === session.refreshToken,
       );
     } catch (error) {
       await DbConstants.POOL.query(DbConstants.ROLLBACK);
@@ -38,9 +45,10 @@ export class SessionHandler implements IHandler {
   ): Promise<HandlerResponse<Tokens>> {
     await DbConstants.POOL.query(DbConstants.BEGIN);
     try {
-      const sessionResults: QueryResult = await DbConstants.POOL.query(Queries.GET_SESSIONS$ACID, [
-        tokenData.accountId,
-      ]);
+      const sessionResults: QueryResult = await DbConstants.POOL.query(
+        Queries.GET_SESSIONS$ACID,
+        [tokenData.accountId],
+      );
       const sessionRecords: unknown[] = sessionResults.rows;
       if (!sessionRecords) {
         throw new UnexpectedQueryResultError();
@@ -54,7 +62,8 @@ export class SessionHandler implements IHandler {
       const sessions: SessionModel[] = SessionModel.fromRecords(sessionRecords);
       // Account has sessions, find one with matching session key
       const session: SessionModel | undefined = sessions.find(
-        (session: SessionModel): boolean => session.sessionKey === tokenData.sessionKey,
+        (session: SessionModel): boolean =>
+          session.sessionKey === tokenData.sessionKey,
       );
       if (session) {
         // Session found, update it
@@ -103,7 +112,9 @@ export class SessionHandler implements IHandler {
     return tokens;
   }
 
-  private static async eliminateSessionIfNecessary(sessions: SessionModel[]): Promise<void> {
+  private static async eliminateSessionIfNecessary(
+    sessions: SessionModel[],
+  ): Promise<void> {
     const sessionCount: number = sessions.length + 1;
     // If account has more than max sessions, delete the oldest one
     if (sessionCount > SessionConstants.MAX_SESSION_COUNT) {
@@ -113,7 +124,9 @@ export class SessionHandler implements IHandler {
           return curr.lastActivityDate < prev.lastActivityDate ? curr : prev;
         },
       );
-      await DbConstants.POOL.query(Queries.DELETE_SESSION$SSID, [oldestSession.sessionId]);
+      await DbConstants.POOL.query(Queries.DELETE_SESSION$SSID, [
+        oldestSession.sessionId,
+      ]);
     }
   }
 

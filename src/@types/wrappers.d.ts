@@ -1,4 +1,10 @@
-import { NextFunction, Request, Response, type Application, type Router } from "express";
+import {
+  NextFunction,
+  Request,
+  Response,
+  type Application,
+  type Router,
+} from "express";
 
 export type ExpressApplication = Application;
 

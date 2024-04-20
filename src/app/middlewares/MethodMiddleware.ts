@@ -1,5 +1,8 @@
 import type { MiddlewareResponse } from "../../@types/responses";
-import type { ExpressNextFunction, ExpressRequest } from "../../@types/wrappers";
+import type {
+  ExpressNextFunction,
+  ExpressRequest,
+} from "../../@types/wrappers";
 import { Method } from "../enums/Method";
 import { RouteHelper } from "../helpers/RouteHelper";
 import type { IMiddleware } from "../interfaces/IMiddleware";

@@ -13,7 +13,9 @@ export class AccountsRequest implements IRequest {
     return typeof blueprint.username === "string";
   }
 
-  public static getValidationErrors(blueprintData: AccountsRequest): ClientError[] {
+  public static getValidationErrors(
+    blueprintData: AccountsRequest,
+  ): ClientError[] {
     const validationErrors: ClientError[] = new Array<ClientError>();
     UsernameValidator.validate(blueprintData.username, validationErrors);
     return validationErrors;

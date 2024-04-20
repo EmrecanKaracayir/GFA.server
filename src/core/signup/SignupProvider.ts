@@ -7,17 +7,22 @@ import { UnexpectedQueryResultError } from "../../app/schemas/ServerError";
 import { ResponseUtil } from "../../app/utils/ResponseUtil";
 
 export class SignupProvider implements IProvider {
-  public async doesAccountExist(username: string): Promise<ProviderResponse<boolean>> {
+  public async doesAccountExist(
+    username: string,
+  ): Promise<ProviderResponse<boolean>> {
     await DbConstants.POOL.query(DbConstants.BEGIN);
     try {
-      const results: QueryResult = await DbConstants.POOL.query(Queries.GET_ACCOUNT$UNAME, [
-        username,
-      ]);
+      const results: QueryResult = await DbConstants.POOL.query(
+        Queries.GET_ACCOUNT$UNAME,
+        [username],
+      );
       const record: unknown = results.rows[0];
       if (!record) {
         return await ResponseUtil.providerResponse(false);
       }
-      return await ResponseUtil.providerResponse(AccountModel.fromRecord(record) ? true : false);
+      return await ResponseUtil.providerResponse(
+        AccountModel.fromRecord(record) ? true : false,
+      );
     } catch (error) {
       await DbConstants.POOL.query(DbConstants.ROLLBACK);
       throw error;
@@ -38,7 +43,9 @@ export class SignupProvider implements IProvider {
       if (!record) {
         throw new UnexpectedQueryResultError();
       }
-      return await ResponseUtil.providerResponse(AccountModel.fromRecord(record));
+      return await ResponseUtil.providerResponse(
+        AccountModel.fromRecord(record),
+      );
     } catch (error) {
       await DbConstants.POOL.query(DbConstants.ROLLBACK);
       throw error;

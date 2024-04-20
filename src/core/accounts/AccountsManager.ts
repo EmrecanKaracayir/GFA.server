@@ -19,9 +19,8 @@ export class AccountsManager implements IManager {
     validatedData: AccountsRequest,
   ): Promise<ManagerResponse<AccountsResponse | null>> {
     // Try to get the account
-    const providerResponse: ProviderResponse<AccountModel | null> = await this.mProvider.getAccount(
-      validatedData.username,
-    );
+    const providerResponse: ProviderResponse<AccountModel | null> =
+      await this.mProvider.getAccount(validatedData.username);
     // Check response
     if (!providerResponse.data) {
       // Return with error

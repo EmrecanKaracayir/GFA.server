@@ -16,7 +16,10 @@ export class TokenVerifier implements IVerifier {
 
   public async verify(isRefreshToken: boolean = false): Promise<boolean> {
     const JWT_SECRET: Secret = EnvironmentHelper.get().jwtSecret;
-    const tokenPayload: JwtPayload | string = jwt.verify(this.mToken, JWT_SECRET);
+    const tokenPayload: JwtPayload | string = jwt.verify(
+      this.mToken,
+      JWT_SECRET,
+    );
     if (!PayloadHelper.isValidPayload(tokenPayload)) {
       return false;
     }
@@ -25,10 +28,8 @@ export class TokenVerifier implements IVerifier {
     if (!isRefreshToken) {
       return accountVerified.data;
     } else {
-      const sessionVerified: HandlerResponse<boolean> = await SessionHandler.verifySession(
-        this.mToken,
-        tokenPayload,
-      );
+      const sessionVerified: HandlerResponse<boolean> =
+        await SessionHandler.verifySession(this.mToken, tokenPayload);
       return accountVerified.data && sessionVerified.data;
     }
   }

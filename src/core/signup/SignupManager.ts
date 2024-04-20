@@ -29,10 +29,11 @@ export class SignupManager implements IManager {
       );
     }
     // Account not found, create one
-    const providerResponse: ProviderResponse<AccountModel> = await this.mProvider.createAccount(
-      validatedData.username,
-      await EncryptionHelper.encrypt(validatedData.password),
-    );
+    const providerResponse: ProviderResponse<AccountModel> =
+      await this.mProvider.createAccount(
+        validatedData.username,
+        await EncryptionHelper.encrypt(validatedData.password),
+      );
     return ResponseUtil.managerResponse(
       new HttpStatus(HttpStatusCode.CREATED),
       null,

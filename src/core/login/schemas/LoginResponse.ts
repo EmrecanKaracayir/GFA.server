@@ -14,6 +14,8 @@ export class LoginResponse implements IResponse {
   }
 
   public static fromModels(models: AccountModel[]): LoginResponse[] {
-    return models.map((model: AccountModel): LoginResponse => LoginResponse.fromModel(model));
+    return models.map(
+      (model: AccountModel): LoginResponse => LoginResponse.fromModel(model),
+    );
   }
 }

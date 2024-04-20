@@ -50,7 +50,8 @@ export class SignupController implements IController {
       }
       const blueprintData: SignupRequest = protovalidData;
       // V3: Physical validation
-      const validationErrors: ClientError[] = SignupRequest.getValidationErrors(blueprintData);
+      const validationErrors: ClientError[] =
+        SignupRequest.getValidationErrors(blueprintData);
       if (validationErrors.length > 0) {
         return ResponseUtil.controllerResponse(
           res,

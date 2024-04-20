@@ -10,10 +10,16 @@ export class SignupResponse implements IResponse {
   ) {}
 
   public static fromModel(model: AccountModel): SignupResponse {
-    return new SignupResponse(model.accountId, model.username, model.membership);
+    return new SignupResponse(
+      model.accountId,
+      model.username,
+      model.membership,
+    );
   }
 
   public static fromModels(models: AccountModel[]): SignupResponse[] {
-    return models.map((model: AccountModel): SignupResponse => SignupResponse.fromModel(model));
+    return models.map(
+      (model: AccountModel): SignupResponse => SignupResponse.fromModel(model),
+    );
   }
 }

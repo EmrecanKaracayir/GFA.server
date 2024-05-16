@@ -233,6 +233,7 @@ ALTER TABLE ONLY public."Employee" ALTER COLUMN "employeeId" SET DEFAULT nextval
 
 COPY public."Branch" ("branchId", name, "companyId", y0, y1, x0, x1) FROM stdin;
 1	Tinaztepe Campus	1	38.376517	38.365742	27.191847	27.21205
+2	Area 51	2	37.282188	37.212334	-115.824466	-115.777152
 \.
 
 
@@ -242,6 +243,7 @@ COPY public."Branch" ("branchId", name, "companyId", y0, y1, x0, x1) FROM stdin;
 
 COPY public."Company" ("companyId", name) FROM stdin;
 1	Dokuz Eylul University
+2	United States Air Force
 \.
 
 
@@ -261,6 +263,8 @@ COPY public."Document" ("documentId", "branchId", content) FROM stdin;
 COPY public."Employee" ("employeeId", username, password, "branchId", "btMac") FROM stdin;
 1	tinaztepeLecturer	1231230Aa.	1	BC:A5:8B:3E:E5:A0
 2	tinaztepeEmployee	1231230Aa.	1	DC:21:48:E6:74:0D
+4	area51Alien	1231230Aa.	2	BC:A5:8B:3E:E5:A0
+6	area51Employee	1231230Aa.	2	DC:21:48:E6:74:0D
 \.
 
 
@@ -268,14 +272,14 @@ COPY public."Employee" ("employeeId", username, password, "branchId", "btMac") F
 -- Name: Branch_branchId_seq; Type: SEQUENCE SET; Schema: public; Owner: UGFA
 --
 
-SELECT pg_catalog.setval('public."Branch_branchId_seq"', 1, true);
+SELECT pg_catalog.setval('public."Branch_branchId_seq"', 2, true);
 
 
 --
 -- Name: Company_companyid_seq; Type: SEQUENCE SET; Schema: public; Owner: UGFA
 --
 
-SELECT pg_catalog.setval('public."Company_companyid_seq"', 1, true);
+SELECT pg_catalog.setval('public."Company_companyid_seq"', 2, true);
 
 
 --
@@ -289,7 +293,7 @@ SELECT pg_catalog.setval('public."Document_documentId_seq"', 1, true);
 -- Name: Employee_employeeId_seq; Type: SEQUENCE SET; Schema: public; Owner: UGFA
 --
 
-SELECT pg_catalog.setval('public."Employee_employeeId_seq"', 2, true);
+SELECT pg_catalog.setval('public."Employee_employeeId_seq"', 6, true);
 
 
 --
@@ -298,14 +302,6 @@ SELECT pg_catalog.setval('public."Employee_employeeId_seq"', 2, true);
 
 ALTER TABLE ONLY public."Branch"
     ADD CONSTRAINT branch_pk PRIMARY KEY ("branchId");
-
-
---
--- Name: Employee bt_uk; Type: CONSTRAINT; Schema: public; Owner: UGFA
---
-
-ALTER TABLE ONLY public."Employee"
-    ADD CONSTRAINT bt_uk UNIQUE ("btMac");
 
 
 --

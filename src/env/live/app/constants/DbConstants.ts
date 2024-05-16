@@ -6,6 +6,9 @@ export class DbConstants {
     host: "rds-gfa-database.czggso0ksewe.eu-central-1.rds.amazonaws.com",
     database: "DGFA",
     port: 5432,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
   public static readonly BEGIN: string = "BEGIN";
   public static readonly COMMIT: string = "COMMIT";

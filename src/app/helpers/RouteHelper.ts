@@ -1,5 +1,4 @@
 import type { ControllerResponse } from "../../@types/responses";
-import type { Tokens } from "../../@types/tokens";
 import type { FullRoute } from "../../@types/utils";
 import type {
   ExpressNextFunction,
@@ -16,15 +15,15 @@ export class RouteHelper implements IHelper {
     Method[]
   >();
 
-  public static buildRoute<D extends IResponse | null, T extends Tokens | null>(
+  public static buildRoute<D extends IResponse | null>(
     router: ExpressRouter,
     fullRoute: FullRoute,
     method: Method,
     handler: (
       req: ExpressRequest,
-      res: ControllerResponse<D, T>,
+      res: ControllerResponse<D>,
       next: ExpressNextFunction,
-    ) => Promise<ControllerResponse<D, T> | void>,
+    ) => Promise<ControllerResponse<D> | void>,
   ): void {
     RouteHelper.addRoute(this.concatRoute(fullRoute));
     switch (method) {

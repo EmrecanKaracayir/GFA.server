@@ -1,7 +1,7 @@
 {
-  "name": "next-rooms.server",
+  "name": "gfa.server",
   "version": "0.0.1",
-  "description": "NEXT-Rooms.server",
+  "description": "GFA.server",
   "main": "dist/main.js",
   "author": "EmrecanKaracayir",
   "license": "PROPRIETARY",
@@ -12,11 +12,13 @@
     "prebuild": "npm run clean && npm run format && npm run lint",
     "build": "tsc",
     "dev": "tsc --watch",
-    "dbOut": "pg_dump --host=localhost --port=5432 --username=\"UNext\" --no-password --dbname=\"DNext\" --create --large-objects --file=./dumps/db.sql",
-    "dbIn": "psql --host=localhost --port=5432 --username=\"UNext\" --no-password --dbname=postgres --command=\"DROP DATABASE IF EXISTS \\\"DNext\\\";\" && psql --host=localhost --port=5432 --username=\"UNext\" --no-password --dbname=postgres --file=./dumps/db.sql",
+    "dbOut": "pg_dump --host=localhost --port=5432 --username=\"UGFA\" --no-password --dbname=\"DGFA\" --create --large-objects --file=./dumps/db.sql",
+    "dbIn": "psql --host=localhost --port=5432 --username=\"UGFA\" --no-password --dbname=postgres --command=\"DROP DATABASE IF EXISTS \\\"DGFA\\\";\" && psql --host=localhost --port=5432 --username=\"UGFA\" --no-password --dbname=postgres --file=./dumps/db.sql",
+    "prepareDevEnv": "npm run dbOut && cp -rf ./src/env/dev/* ./src/ && npm run build",
     "startDev": "node ./dist/main.js",
-    "startLive": "pm2 start  ./dist/server.js",
-    "stopLive": "pm2 stop ./dist/server.js"
+    "prepareLiveEnv": "npm run dbIn && cp -rf ./src/env/live/* ./src/ && npm run build",
+    "startLive": "pm2 start  ./dist/main.js",
+    "stopLive": "pm2 stop ./dist/main.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -33,7 +35,6 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3"

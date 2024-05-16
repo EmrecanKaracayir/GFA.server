@@ -1,7 +1,6 @@
 import { ClientErrorCodeMap } from "../../@types/maps";
 import { IResponse } from "../interfaces/IResponse";
 import { AccountRules } from "../rules/AccountRules";
-import { SessionRules } from "../rules/SessionRules";
 
 export class ClientError implements IResponse {
   public readonly code: number;
@@ -20,23 +19,14 @@ export enum ClientErrorCode {
   MISSING_BODY = 10000,
   INVALID_BODY = 10001,
   //  *  *  101XX: Parameter errors
-  MISSING_PARAMETER = 10100,
-  INVALID_PARAMETER = 10101,
   //  *  *  102XX: Query errors
-  MISSING_QUERY = 10200,
-  INVALID_QUERY = 10201,
   //  *  2XXXX: Method errors
   METHOD_NOT_ALLOWED = 20000,
 
   // AUTHORIZATION ERRORS (3XXXX - 5XXXX)
   //  *  3XXXX: Token errors
-  INVALID_TOKEN = 30000,
-  EXPIRED_TOKEN = 30001,
   //  *  4XXXX: Session errors
-  INVALID_SESSION_KEY_LENGTH = 40000,
-  INVALID_SESSION_KEY_CONTENT = 40001,
   //  *  5XXXX: Permission errors
-  FORBIDDEN_ACCESS = 50000,
 
   // VALIDATION ERRORS (6XXXX - 7XXXX)
   //  *  6XXXX: Length errors
@@ -48,11 +38,14 @@ export enum ClientErrorCode {
 
   // REQUEST ERRORS (8XXXX - 9XXXX)
   //  *  8XXXX: Route errors
-  //  *  *  800XX: /login errors
+  //  *  *  800XX: /loget errors
   NO_ACCOUNT_FOUND = 80004,
   INCORRECT_PASSWORD = 80005,
-  //  *  *  801XX: /signup errors
-  ACCOUNT_ALREADY_EXISTS = 80104,
+  NO_BRANCH_FOUND = 80006,
+  INVALID_PHYSICAL_LOCATION = 80007,
+  BRANCH_HAS_NO_EMPLOYEES = 80008,
+  INVALID_LOGICAL_LOCATION = 80009,
+  BRANCH_HAS_NO_DOCUMENTS = 80010,
   //  *  9XXXX: Catch-all errors
   RESOURCE_NOT_FOUND = 90000,
 }
@@ -64,25 +57,14 @@ const clientErrorMessages: ClientErrorCodeMap<string> = {
   [ClientErrorCode.MISSING_BODY]: "Request body was not provided.",
   [ClientErrorCode.INVALID_BODY]: "Provided request body was invalid.",
   //  *  *  101XX: Parameter errors
-  [ClientErrorCode.MISSING_PARAMETER]: "Required parameter was not provided.",
-  [ClientErrorCode.INVALID_PARAMETER]: "Provided parameter was invalid.",
   //  *  *  102XX: Query errors
-  [ClientErrorCode.MISSING_QUERY]: "Required query was not provided.",
-  [ClientErrorCode.INVALID_QUERY]: "Provided query was invalid.",
   //  *  2XXXX: Method errors
   [ClientErrorCode.METHOD_NOT_ALLOWED]: "Requested method is not allowed.",
 
   // AUTHORIZATION ERRORS (3XXXX - 5XXXX)
   //  *  3XXXX: Token errors
-  [ClientErrorCode.INVALID_TOKEN]: "Provided token was invalid.",
-  [ClientErrorCode.EXPIRED_TOKEN]: "Provided token has expired.",
   //  *  4XXXX: Session errors
-  [ClientErrorCode.INVALID_SESSION_KEY_LENGTH]: `Provided session key wasn't in the length range of ${SessionRules.SESSION_KEY_MIN_LENGTH} to ${SessionRules.SESSION_KEY_MAX_LENGTH}.`,
-  [ClientErrorCode.INVALID_SESSION_KEY_CONTENT]:
-    "Provided session key was invalid.",
   //  *  5XXXX: Permission errors
-  [ClientErrorCode.FORBIDDEN_ACCESS]:
-    "Provided membership doesn't have the necessary permissions to access this resource.",
 
   // VALIDATION ERRORS (6XXXX - 7XXXX)
   //  *  6XXXX: Length errors
@@ -96,13 +78,19 @@ const clientErrorMessages: ClientErrorCodeMap<string> = {
 
   // REQUEST ERRORS (8XXXX - 9XXXX)
   //  *  8XXXX: Route errors
-  //  *  *  800XX: /login errors
+  //  *  *  800XX: /loget errors
   [ClientErrorCode.NO_ACCOUNT_FOUND]:
     "No account was found with the provided username.",
   [ClientErrorCode.INCORRECT_PASSWORD]: "Provided password was incorrect.",
-  //  *  *  801XX: /signup errors
-  [ClientErrorCode.ACCOUNT_ALREADY_EXISTS]:
-    "An account already exists with the provided username.",
+  [ClientErrorCode.NO_BRANCH_FOUND]:
+    "No branch was found with the registered employee.",
+  [ClientErrorCode.INVALID_PHYSICAL_LOCATION]:
+    "Provided physical location was invalid.",
+  [ClientErrorCode.BRANCH_HAS_NO_EMPLOYEES]:
+    "Branch has no employees registered.",
+  [ClientErrorCode.INVALID_LOGICAL_LOCATION]:
+    "Provided logical location was invalid.",
+  [ClientErrorCode.BRANCH_HAS_NO_DOCUMENTS]: "Branch has no documents to get.",
   //  *  9XXXX: Catch-all errors
   [ClientErrorCode.RESOURCE_NOT_FOUND]:
     "The requested resource couldn't be found.",

@@ -4,7 +4,6 @@ import type {
   MiddlewareResponse,
   ProviderResponse,
 } from "../../@types/responses";
-import type { Tokens } from "../../@types/tokens";
 import { DbConstants } from "../constants/DbConstants";
 import type { IModel } from "../interfaces/IModel";
 import type { IResponse } from "../interfaces/IResponse";
@@ -14,25 +13,18 @@ import type { HttpStatus } from "../schemas/HttpStatus";
 import type { ServerError } from "../schemas/ServerError";
 
 export class ResponseUtil implements IUtil {
-  public static controllerResponse<
-    DO extends IResponse | null,
-    TO extends Tokens | null,
-    D extends DO,
-    T extends TO,
-  >(
-    res: ControllerResponse<DO, TO>,
+  public static controllerResponse<DO extends IResponse | null, D extends DO>(
+    res: ControllerResponse<DO>,
     httpStatus: HttpStatus,
     serverError: ServerError | null,
     clientErrors: ClientError[],
     data: D,
-    tokens: T,
-  ): ControllerResponse<DO, TO> {
+  ): ControllerResponse<DO> {
     return res.status(httpStatus.code).send({
       httpStatus,
       serverError,
       clientErrors,
       data,
-      tokens,
     });
   }
 
@@ -47,7 +39,6 @@ export class ResponseUtil implements IUtil {
       httpStatus,
       serverError,
       clientErrors,
-      null,
       null,
     );
   }

@@ -8,10 +8,13 @@
   "words": [
     "codepaths",
     "dbname",
+    "DGFA",
     "ecma",
     "Emrecan",
     "JFVA",
     "Karacayir",
+    "loget",
+    "Loget",
     "LUFHJF",
     "Nioy",
     "postgres",
@@ -22,6 +25,7 @@
     "RTOKEN",
     "SKEY",
     "tsbuildinfo",
-    "typedef"
+    "typedef",
+    "UGFA"
   ]
 }

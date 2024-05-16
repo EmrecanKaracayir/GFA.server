@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.2 (Postgres.app)
--- Dumped by pg_dump version 16.2 (Postgres.app)
+-- Dumped from database version 16.3 (Postgres.app)
+-- Dumped by pg_dump version 16.3 (Postgres.app)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -17,15 +17,15 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: DNext; Type: DATABASE; Schema: -; Owner: UNext
+-- Name: DGFA; Type: DATABASE; Schema: -; Owner: UGFA
 --
 
-CREATE DATABASE "DNext" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.UTF-8';
+CREATE DATABASE "DGFA" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.UTF-8';
 
 
-ALTER DATABASE "DNext" OWNER TO "UNext";
+ALTER DATABASE "DGFA" OWNER TO "UGFA";
 
-\connect "DNext"
+\connect "DGFA"
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -37,43 +37,33 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: MembershipType; Type: TYPE; Schema: public; Owner: UNext
---
-
-CREATE TYPE public."MembershipType" AS ENUM (
-    'FREE',
-    'PREMIUM',
-    'ADMIN'
-);
-
-
-ALTER TYPE public."MembershipType" OWNER TO "UNext";
 
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: Account; Type: TABLE; Schema: public; Owner: UNext
+-- Name: Branch; Type: TABLE; Schema: public; Owner: UGFA
 --
 
-CREATE TABLE public."Account" (
-    "accountId" integer NOT NULL,
-    username character varying(16) NOT NULL,
-    password character varying(60) NOT NULL,
-    membership public."MembershipType" DEFAULT 'FREE'::public."MembershipType" NOT NULL
+CREATE TABLE public."Branch" (
+    "branchId" integer NOT NULL,
+    name character varying(256) NOT NULL,
+    "companyId" integer NOT NULL,
+    y0 double precision NOT NULL,
+    y1 double precision NOT NULL,
+    x0 double precision NOT NULL,
+    x1 double precision NOT NULL
 );
 
 
-ALTER TABLE public."Account" OWNER TO "UNext";
+ALTER TABLE public."Branch" OWNER TO "UGFA";
 
 --
--- Name: Account_accountId_seq; Type: SEQUENCE; Schema: public; Owner: UNext
+-- Name: Branch_branchId_seq; Type: SEQUENCE; Schema: public; Owner: UGFA
 --
 
-CREATE SEQUENCE public."Account_accountId_seq"
+CREATE SEQUENCE public."Branch_branchId_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -82,35 +72,59 @@ CREATE SEQUENCE public."Account_accountId_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."Account_accountId_seq" OWNER TO "UNext";
+ALTER SEQUENCE public."Branch_branchId_seq" OWNER TO "UGFA";
 
 --
--- Name: Account_accountId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: UNext
+-- Name: Branch_branchId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: UGFA
 --
 
-ALTER SEQUENCE public."Account_accountId_seq" OWNED BY public."Account"."accountId";
+ALTER SEQUENCE public."Branch_branchId_seq" OWNED BY public."Branch"."branchId";
 
 
 --
--- Name: Session; Type: TABLE; Schema: public; Owner: UNext
+-- Name: Employee; Type: TABLE; Schema: public; Owner: UGFA
 --
 
-CREATE TABLE public."Session" (
-    "sessionId" integer NOT NULL,
-    "accountId" integer NOT NULL,
-    "sessionKey" character varying(128) NOT NULL,
-    "refreshToken" character varying(256) DEFAULT 'dummy_refresh_token'::character varying NOT NULL,
-    "lastActivityDate" date DEFAULT CURRENT_DATE NOT NULL
+CREATE TABLE public."Employee" (
+    "employeeId" integer NOT NULL,
+    username character varying(256) NOT NULL,
+    password character varying(256) NOT NULL,
+    "branchId" integer NOT NULL,
+    "btMac" character varying(17) NOT NULL
 );
 
 
-ALTER TABLE public."Session" OWNER TO "UNext";
+ALTER TABLE public."Employee" OWNER TO "UGFA";
 
 --
--- Name: Session_sessionId_seq; Type: SEQUENCE; Schema: public; Owner: UNext
+-- Name: BtMacsView; Type: VIEW; Schema: public; Owner: UGFA
 --
 
-CREATE SEQUENCE public."Session_sessionId_seq"
+CREATE VIEW public."BtMacsView" AS
+ SELECT "branchId",
+    "btMac"
+   FROM public."Employee";
+
+
+ALTER VIEW public."BtMacsView" OWNER TO "UGFA";
+
+--
+-- Name: Company; Type: TABLE; Schema: public; Owner: UGFA
+--
+
+CREATE TABLE public."Company" (
+    "companyId" integer NOT NULL,
+    name character varying(256) NOT NULL
+);
+
+
+ALTER TABLE public."Company" OWNER TO "UGFA";
+
+--
+-- Name: Company_companyid_seq; Type: SEQUENCE; Schema: public; Owner: UGFA
+--
+
+CREATE SEQUENCE public."Company_companyid_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -119,91 +133,235 @@ CREATE SEQUENCE public."Session_sessionId_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."Session_sessionId_seq" OWNER TO "UNext";
+ALTER SEQUENCE public."Company_companyid_seq" OWNER TO "UGFA";
 
 --
--- Name: Session_sessionId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: UNext
+-- Name: Company_companyid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: UGFA
 --
 
-ALTER SEQUENCE public."Session_sessionId_seq" OWNED BY public."Session"."sessionId";
-
-
---
--- Name: Account accountId; Type: DEFAULT; Schema: public; Owner: UNext
---
-
-ALTER TABLE ONLY public."Account" ALTER COLUMN "accountId" SET DEFAULT nextval('public."Account_accountId_seq"'::regclass);
+ALTER SEQUENCE public."Company_companyid_seq" OWNED BY public."Company"."companyId";
 
 
 --
--- Name: Session sessionId; Type: DEFAULT; Schema: public; Owner: UNext
+-- Name: Document; Type: TABLE; Schema: public; Owner: UGFA
 --
 
-ALTER TABLE ONLY public."Session" ALTER COLUMN "sessionId" SET DEFAULT nextval('public."Session_sessionId_seq"'::regclass);
+CREATE TABLE public."Document" (
+    "documentId" integer NOT NULL,
+    "branchId" integer NOT NULL,
+    content character varying NOT NULL
+);
+
+
+ALTER TABLE public."Document" OWNER TO "UGFA";
+
+--
+-- Name: Document_documentId_seq; Type: SEQUENCE; Schema: public; Owner: UGFA
+--
+
+CREATE SEQUENCE public."Document_documentId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public."Document_documentId_seq" OWNER TO "UGFA";
+
+--
+-- Name: Document_documentId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: UGFA
+--
+
+ALTER SEQUENCE public."Document_documentId_seq" OWNED BY public."Document"."documentId";
 
 
 --
--- Data for Name: Account; Type: TABLE DATA; Schema: public; Owner: UNext
+-- Name: Employee_employeeId_seq; Type: SEQUENCE; Schema: public; Owner: UGFA
 --
 
-COPY public."Account" ("accountId", username, password, membership) FROM stdin;
-11	Alper	$2b$10$BBtrF3xmlo8pzC.Jbn8Sb.bGkv3xjuN1utcrVXXknAh76j7Xq4pPu	FREE
+CREATE SEQUENCE public."Employee_employeeId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public."Employee_employeeId_seq" OWNER TO "UGFA";
+
+--
+-- Name: Employee_employeeId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: UGFA
+--
+
+ALTER SEQUENCE public."Employee_employeeId_seq" OWNED BY public."Employee"."employeeId";
+
+
+--
+-- Name: Branch branchId; Type: DEFAULT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Branch" ALTER COLUMN "branchId" SET DEFAULT nextval('public."Branch_branchId_seq"'::regclass);
+
+
+--
+-- Name: Company companyId; Type: DEFAULT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Company" ALTER COLUMN "companyId" SET DEFAULT nextval('public."Company_companyid_seq"'::regclass);
+
+
+--
+-- Name: Document documentId; Type: DEFAULT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Document" ALTER COLUMN "documentId" SET DEFAULT nextval('public."Document_documentId_seq"'::regclass);
+
+
+--
+-- Name: Employee employeeId; Type: DEFAULT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Employee" ALTER COLUMN "employeeId" SET DEFAULT nextval('public."Employee_employeeId_seq"'::regclass);
+
+
+--
+-- Data for Name: Branch; Type: TABLE DATA; Schema: public; Owner: UGFA
+--
+
+COPY public."Branch" ("branchId", name, "companyId", y0, y1, x0, x1) FROM stdin;
+1	Tinaztepe Campus	1	38.376517	38.365742	27.191847	27.21205
 \.
 
 
 --
--- Data for Name: Session; Type: TABLE DATA; Schema: public; Owner: UNext
+-- Data for Name: Company; Type: TABLE DATA; Schema: public; Owner: UGFA
 --
 
-COPY public."Session" ("sessionId", "accountId", "sessionKey", "refreshToken", "lastActivityDate") FROM stdin;
-17	11	OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5.Tk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk____1	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjExLCJtZW1iZXJzaGlwIjoiRlJFRSIsInNlc3Npb25JZCI6MTcsImlhdCI6MTcwNjg4MDk5MSwiZXhwIjoxNzA5NDcyOTkxfQ.Ve7t6nWueQFhT648zvB2auESRhJP0dywzxpqvPkCqOU	2024-02-02
+COPY public."Company" ("companyId", name) FROM stdin;
+1	Dokuz Eylul University
 \.
 
 
 --
--- Name: Account_accountId_seq; Type: SEQUENCE SET; Schema: public; Owner: UNext
+-- Data for Name: Document; Type: TABLE DATA; Schema: public; Owner: UGFA
 --
 
-SELECT pg_catalog.setval('public."Account_accountId_seq"', 11, true);
-
-
---
--- Name: Session_sessionId_seq; Type: SEQUENCE SET; Schema: public; Owner: UNext
---
-
-SELECT pg_catalog.setval('public."Session_sessionId_seq"', 17, true);
+COPY public."Document" ("documentId", "branchId", content) FROM stdin;
+1	1	Shhh... let's not leak our hard work!\nThis is a confidential information, sharing may result in legal consequences!\nWe'll be launching Project Titan on July the 2nd, please start preparations.
+\.
 
 
 --
--- Name: Account Account_name_uk; Type: CONSTRAINT; Schema: public; Owner: UNext
+-- Data for Name: Employee; Type: TABLE DATA; Schema: public; Owner: UGFA
 --
 
-ALTER TABLE ONLY public."Account"
-    ADD CONSTRAINT "Account_name_uk" UNIQUE (username);
-
-
---
--- Name: Account Account_pk; Type: CONSTRAINT; Schema: public; Owner: UNext
---
-
-ALTER TABLE ONLY public."Account"
-    ADD CONSTRAINT "Account_pk" PRIMARY KEY ("accountId");
+COPY public."Employee" ("employeeId", username, password, "branchId", "btMac") FROM stdin;
+1	tinaztepeLecturer	1231230Aa.	1	BC:A5:8B:3E:E5:A0
+2	tinaztepeEmployee	1231230Aa.	1	DC:21:48:E6:74:0D
+\.
 
 
 --
--- Name: Session Session_pk; Type: CONSTRAINT; Schema: public; Owner: UNext
+-- Name: Branch_branchId_seq; Type: SEQUENCE SET; Schema: public; Owner: UGFA
 --
 
-ALTER TABLE ONLY public."Session"
-    ADD CONSTRAINT "Session_pk" PRIMARY KEY ("sessionId");
+SELECT pg_catalog.setval('public."Branch_branchId_seq"', 1, true);
 
 
 --
--- Name: Session Session_Account_fk; Type: FK CONSTRAINT; Schema: public; Owner: UNext
+-- Name: Company_companyid_seq; Type: SEQUENCE SET; Schema: public; Owner: UGFA
 --
 
-ALTER TABLE ONLY public."Session"
-    ADD CONSTRAINT "Session_Account_fk" FOREIGN KEY ("accountId") REFERENCES public."Account"("accountId");
+SELECT pg_catalog.setval('public."Company_companyid_seq"', 1, true);
+
+
+--
+-- Name: Document_documentId_seq; Type: SEQUENCE SET; Schema: public; Owner: UGFA
+--
+
+SELECT pg_catalog.setval('public."Document_documentId_seq"', 1, true);
+
+
+--
+-- Name: Employee_employeeId_seq; Type: SEQUENCE SET; Schema: public; Owner: UGFA
+--
+
+SELECT pg_catalog.setval('public."Employee_employeeId_seq"', 2, true);
+
+
+--
+-- Name: Branch branch_pk; Type: CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Branch"
+    ADD CONSTRAINT branch_pk PRIMARY KEY ("branchId");
+
+
+--
+-- Name: Employee bt_uk; Type: CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Employee"
+    ADD CONSTRAINT bt_uk UNIQUE ("btMac");
+
+
+--
+-- Name: Company company_pk; Type: CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Company"
+    ADD CONSTRAINT company_pk PRIMARY KEY ("companyId");
+
+
+--
+-- Name: Document document; Type: CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Document"
+    ADD CONSTRAINT document PRIMARY KEY ("documentId");
+
+
+--
+-- Name: Employee employee_pk; Type: CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Employee"
+    ADD CONSTRAINT employee_pk PRIMARY KEY ("employeeId");
+
+
+--
+-- Name: Employee username_uk; Type: CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Employee"
+    ADD CONSTRAINT username_uk UNIQUE (username);
+
+
+--
+-- Name: Employee branch_fk; Type: FK CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Employee"
+    ADD CONSTRAINT branch_fk FOREIGN KEY ("branchId") REFERENCES public."Branch"("branchId");
+
+
+--
+-- Name: Document branch_fk; Type: FK CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Document"
+    ADD CONSTRAINT branch_fk FOREIGN KEY ("branchId") REFERENCES public."Branch"("branchId");
+
+
+--
+-- Name: Branch company_fk; Type: FK CONSTRAINT; Schema: public; Owner: UGFA
+--
+
+ALTER TABLE ONLY public."Branch"
+    ADD CONSTRAINT company_fk FOREIGN KEY ("companyId") REFERENCES public."Company"("companyId");
 
 
 --

@@ -1,6 +1,6 @@
 # Geo-restriction Factor Authentication | Backend
 
-For the frontend, refer to [this repo](https://github.com/EmrecanKaracayir/GFA.client).
+For the frontend, refer to [this repository](https://github.com/EmrecanKaracayir/GFA.client).
 
 ---
 
